@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class DisplaySupplies : MonoBehaviour
 {
     public Text suppliesDisplay;
-    public TestNavScript supplies;
+    public PlayerNavScript supplies;
 
     // Start is called before the first frame update
     void Start()

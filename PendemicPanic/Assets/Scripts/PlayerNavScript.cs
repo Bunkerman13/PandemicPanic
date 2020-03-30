@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class TestNavScript : MonoBehaviour
+public class PlayerNavScript : MonoBehaviour
 {
     //
     // data structures used to storing location data
-    public List<Vector3> test;
-    public List<string> textIDs;
+    public List<Vector3> loc;
+    public List<string> locIDs;
 
     // maintains immediate location history
     public string currentLocation;
@@ -34,8 +34,8 @@ public class TestNavScript : MonoBehaviour
         pathing = GetComponent<NavMeshAgent>();
         locations = new Dictionary<string, Vector3>();
 
-        for (int x = 0; x < test.Count; x++)
-            locations.Add(textIDs[x], test[x]);
+        for (int x = 0; x < loc.Count; x++)
+            locations.Add(locIDs[x], loc[x]);
 
         previousLocation = "Home";
         currentLocation = "Home";
@@ -43,6 +43,10 @@ public class TestNavScript : MonoBehaviour
         isGoingToSleep = false;
 
         player = GetComponent<PlayerValues>();
+
+        //Initial supplies
+        numOfSupplies = Random.Range(1, 5);
+
     }
 
     // Start is called before the first frame update
@@ -68,7 +72,9 @@ public class TestNavScript : MonoBehaviour
               player.energy += .1f;
             else // after alloted time, 'wake up'
                 isGoingToSleep = !isGoingToSleep;
+
     }
+
 
     // sends player to the store location
     // cannot do this if player IS sleeping
@@ -124,7 +130,7 @@ public class TestNavScript : MonoBehaviour
             // NOTE: currently a max of 5 supplies at a time allowed
             previousLocation = "Home";
             canGoToStore = true;
-            numOfSupplies += Random.Range(0, 5);
+            numOfSupplies += Random.Range(1, 5);
             if (numOfSupplies > 5)
                 numOfSupplies = 5;
         }
@@ -133,8 +139,14 @@ public class TestNavScript : MonoBehaviour
         // functionality for possibility of player getting infected for entering the 'store'
         if(collision.transform.tag == "InfectionZone")
         {
+            //chanceOfInfection is an int number determined by population in store, 1 = 10%
+            //Randomize a number between 0-10 to represent 0% to 100%
+            if(Random.Range(0,10) <= pop.chanceOfInfection)
+            {
+                GetComponent<PlayerValues>().infected = true;    
+            }
             //if (Random.Range(1, 21) + pop.population > 16 && player.infected != true)
-                //player.infected = true;
+            //player.infected = true;
         }
     }
 }

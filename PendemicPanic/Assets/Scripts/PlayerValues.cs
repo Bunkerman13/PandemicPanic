@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PlayerValues : MonoBehaviour
 {
@@ -22,7 +23,6 @@ public class PlayerValues : MonoBehaviour
     float decrementHealth;
     float decrementEnergy;
     float decrementHunger;
-
 
     // Start is called before the first frame update
     void Start()
@@ -59,12 +59,18 @@ public class PlayerValues : MonoBehaviour
 
         // make sure the values do NOT go below zero
         // NOTE: will need to change to 'game over' functionality
-        if (health <= 0)
-            health = 0;
-        if (energy <= 0)
-            energy = 0;
-        if (hunger <= 0)
-            hunger = 0;
+        //if (health <= 0)
+            //health = 0;
+        //if (energy <= 0)
+            //energy = 0;
+        //if (hunger <= 0)
+            //hunger = 0;
+
+        if(health <= 0 || energy <= 0 || hunger <= 0)
+        {
+            GameOver();
+        }
+
 
         // makes sure the values do NOT go over 100
         if (health >= 100)
@@ -117,5 +123,11 @@ public class PlayerValues : MonoBehaviour
             Debug.Log(infectedLevel);
         else
             Debug.Log(14 - infectedLevel);
+    }
+
+    //When game over, display game over scene
+   void GameOver()
+    {
+        SceneManager.LoadScene("GameOver");
     }
 }
